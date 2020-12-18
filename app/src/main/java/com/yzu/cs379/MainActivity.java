@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         mysnipper = new snipper();
         if(mysnipper.isNetWorkAvailable(this)){
             mysnipper.login("","");
+            mysnipper.getCFPcatalogPageList("machine learning");
+            mysnipper.getCFPMyListPageList(1);
             mysnipper.getCFPMainPageList();
         }
 

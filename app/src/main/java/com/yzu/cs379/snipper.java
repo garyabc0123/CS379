@@ -23,6 +23,7 @@ import java.util.Map;
 public class snipper {
     private Map<String, String> cookie;
     private String account;
+    private final String cfpLink = "http://www.wikicfp.com";
     public void snipper(){
 
     }
@@ -123,7 +124,7 @@ public class snipper {
                     Element tempDocFirst = mainTable.get(iterator);
                     Element tempDocSecond = mainTable.get(iterator + 1);
                     cfpMetaClass temp = new cfpMetaClass();
-                    temp.Link = tempDocFirst.select("a").first().attr("href");
+                    temp.Link = cfpLink + tempDocFirst.select("a").first().attr("href");
                     temp.Brief = tempDocFirst.getElementsByAttributeValue("colspan","4").text();
                     temp.Event = tempDocFirst.select("a").first().text();
                     temp.When = tempDocSecond.select("td").get(0).text();
@@ -151,6 +152,121 @@ public class snipper {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
+
+        return ret;
+    }
+    public List<cfpMetaClass> getCFPMyListPageList(int page){
+        if(cookie != null && cookie.containsKey("accountkey")){}
+        else
+            return null;
+        if(page < 0){
+            return null;
+        }
+        List<cfpMetaClass> ret = new ArrayList<>();
+        Runnable run1 = () -> {
+            try{
+                String url = cfpLink + "/cfp/";
+                Connection conn = Jsoup.connect(url);
+                conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
+                conn.cookie("accountkey",cookie.get("accountkey"));
+                conn.method(Connection.Method.POST);
+                conn.timeout(30000);
+                Connection.Response response = conn.execute();
+                Document document = response.parse();
+
+                String url2 = cfpLink +  document.getElementsByClass("menusec").last().getElementsByClass("nav").get(9).attr("href") + "&page=" + Integer.toString(page);
+
+                conn = null;
+                response = null;
+                document = null;
+                conn = Jsoup.connect(url2);
+                conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
+                conn.cookie("accountkey",cookie.get("accountkey"));
+                conn.method(Connection.Method.POST);
+                conn.timeout(30000);
+                response = conn.execute();
+                document = response.parse();
+
+                Elements mainTable = document.getElementsByClass("contsec").first().select("center > table > tbody > tr").get(2).select("td > table > tbody > tr");
+                int iterator = 1;
+                while(iterator < mainTable.size()){
+                    Element tempDocFirst = mainTable.get(iterator);
+                    Element tempDocSecond = mainTable.get(iterator + 1);
+                    cfpMetaClass temp = new cfpMetaClass();
+                    temp.Link =  cfpLink + tempDocFirst.select("a").first().attr("href");
+                    temp.Brief = tempDocFirst.getElementsByAttributeValue("colspan","4").text();
+                    temp.Event = tempDocFirst.select("a").first().text();
+                    temp.When = tempDocSecond.select("td").get(0).text();
+                    temp.Where = tempDocSecond.select("td").get(1).text();
+                    temp.Deadline = tempDocSecond.select("td").get(2).text();
+                    temp.inMyList = tempDocSecond.getElementsByAttributeValue("align","center").size() != 0;
+                    ret.add(temp);
+                    iterator += 2;
+
+
+
+
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        };
+
+        Thread  td = new Thread(run1);
+        td.start();
+        try{
+            td.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
+        return ret;
+
+    }
+    public List<cfpMetaClass> getCFPcatalogPageList(String catalogName){
+        List<cfpMetaClass> ret = new ArrayList<>();
+        Runnable runable = () -> {
+            try {
+                String url =  cfpLink + "/cfp/call?conference=" + catalogName;
+                Connection conn = Jsoup.connect(url);
+                conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
+                if(cookie != null && cookie.containsKey("accountkey")){
+                    conn.cookie("accountkey",cookie.get("accountkey"));
+                }
+                conn.method(Connection.Method.POST);
+                conn.timeout(30000);
+                Connection.Response response = conn.execute();
+                Document document = response.parse();
+
+                Elements mainTable = document.getElementsByClass("contsec").last().select("center > form > table > tbody > tr").get(2).select("table > tbody > tr");
+                for(int iterator = 1 ; iterator < mainTable.size() ; iterator += 2){
+                    Element tempDocFirst = mainTable.get(iterator);
+                    Element tempDocSecond = mainTable.get(iterator + 1);
+                    cfpMetaClass temp = new cfpMetaClass();
+                    temp.Link =  cfpLink + tempDocFirst.select("a").first().attr("href");
+                    temp.Brief = tempDocFirst.getElementsByAttributeValue("colspan","4").text();
+                    temp.Event = tempDocFirst.select("a").first().text();
+                    temp.When = tempDocSecond.select("td").get(0).text();
+                    temp.Where = tempDocSecond.select("td").get(1).text();
+                    temp.Deadline = tempDocSecond.select("td").get(2).text();
+                    temp.inMyList = tempDocSecond.getElementsByAttributeValue("align","center").size() != 0 && tempDocSecond.getElementsByAttributeValue("align","center").text().equals("in My List");
+                    ret.add(temp);
+                }
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        };
+
+        Thread  td = new Thread(runable);
+        td.start();
+        try{
+            td.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
+
 
         return ret;
     }
