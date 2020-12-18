@@ -18,8 +18,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mysnipper = new snipper();
-        if(mysnipper.isNetWorkAvailable(this))
+        if(mysnipper.isNetWorkAvailable(this)){
             mysnipper.login("","");
+            mysnipper.getCFPMainPageList();
+        }
+
         else
             Log.d("state","network error");
     }
