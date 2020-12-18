@@ -1,3 +1,5 @@
+package com.yzu.cs379;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

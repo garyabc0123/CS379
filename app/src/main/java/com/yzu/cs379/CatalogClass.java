@@ -1,3 +1,5 @@
+package com.yzu.cs379;
+
 public class CatalogClass {
     public String name;
     public String userName;
