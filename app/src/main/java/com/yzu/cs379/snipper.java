@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,9 +26,11 @@ public class snipper {
     private String account;
     private final String cfpLink = "http://www.wikicfp.com";
     public void snipper(){
-
+        account = "";
+        cookie = new HashMap<>();
     }
     public void snipper(String token,String account){
+        cookie = new HashMap<>();
         cookie.put("accountkey",token);
         this.account = account;
     }
@@ -67,9 +70,9 @@ public class snipper {
             e.printStackTrace();
         }
 
-        return cookie.containsKey("accountkey"); //if login success return true
-
-
+        boolean ret =  cookie.containsKey("accountkey"); //if login success return true
+        cookie.put("accountkey","");
+        return ret;
 
     }
     public boolean isNetWorkAvailable(Activity activity){
@@ -89,10 +92,13 @@ public class snipper {
         return false;
     }
     public String getToken(){
+        if(cookie ==null)
+            return "";
         return cookie.get("accountkey");
     }
     public String getAccount(){return this.account;}
     public void setting(String token,String account){
+        cookie = new HashMap<>();
         cookie.put("accountkey",token);
         this.account = account;
     }
@@ -103,7 +109,7 @@ public class snipper {
                 String url = "http://www.wikicfp.com/cfp/";
                 Connection conn = Jsoup.connect(url);
                 conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
-                if(cookie != null && cookie.containsKey("accountkey")){
+                if(cookie != null && cookie.containsKey("accountkey")&& !cookie.get("accountkey").equals("")){
                     conn.cookie("accountkey",cookie.get("accountkey"));
                 }
                 conn.method(Connection.Method.POST);
@@ -154,11 +160,11 @@ public class snipper {
         return ret;
     }
     public List<cfpMetaClass> getCFPMyListPageList(int page){
-        if(cookie != null && cookie.containsKey("accountkey")){}
+        if(cookie != null && cookie.containsKey("accountkey")&& !cookie.get("accountkey").equals("")){}
         else
-            return null;
+            return new ArrayList<>();
         if(page < 0){
-            return null;
+            return new ArrayList<>();
         }
         List<cfpMetaClass> ret = new ArrayList<>();
         Runnable run1 = () -> {
@@ -229,7 +235,7 @@ public class snipper {
                 String url =  cfpLink + "/cfp/call?conference=" + catalogName + "&page="+ Integer.toString(page);
                 Connection conn = Jsoup.connect(url);
                 conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
-                if(cookie != null && cookie.containsKey("accountkey")){
+                if(cookie != null && cookie.containsKey("accountkey")&& !cookie.get("accountkey").equals("")){
                     conn.cookie("accountkey",cookie.get("accountkey"));
                 }
                 conn.method(Connection.Method.POST);
@@ -274,7 +280,7 @@ public class snipper {
             try{
                 Connection conn = Jsoup.connect(Link);
                 conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
-                if(cookie != null && cookie.containsKey("accountkey")){
+                if(cookie != null && cookie.containsKey("accountkey") && !cookie.get("accountkey").equals("")){
                     conn.cookie("accountkey",cookie.get("accountkey"));
                 }
                 conn.method(Connection.Method.POST);
@@ -314,7 +320,7 @@ public class snipper {
                     }
                 }
                 ret.webContent = document.getElementsByClass("cfp").get(0).html();
-
+                ret.eventName = document.getElementsByAttributeValue("property","v:description").first().text();
 
 
 

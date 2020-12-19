@@ -2,6 +2,7 @@ package com.yzu.cs379;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         mysnipper = new snipper();
         if(mysnipper.isNetWorkAvailable(this)){
             mysnipper.login("","");
-
+            /*
             List<cfpMetaClass> test = mysnipper.getCFPcatalogPageList("machine learning",1);
             for(int i = 0 ; i < test.size() ; i++){
                 mysnipper.getEventContent(test.get(1).Link);
@@ -35,6 +36,14 @@ public class MainActivity extends AppCompatActivity {
             for(int i = 0 ; i < test.size() ; i++){
                 mysnipper.getEventContent(test.get(1).Link);
             }
+            */
+            Intent intentToEventContent = new Intent(this,event_content.class);
+            Bundle bag = new Bundle();
+            bag.putString("link","http://www.wikicfp.com/cfp/servlet/event.showcfp?eventid=120560&copyownerid=31491");
+            bag.putString("token",mysnipper.getToken());
+            bag.putString("account",mysnipper.getAccount());
+            intentToEventContent.putExtras(bag);
+            startActivity(intentToEventContent);
         }
 
         else
