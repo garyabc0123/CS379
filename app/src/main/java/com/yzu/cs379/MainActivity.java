@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.List;
+
 
 //
 //ever should have simple readme like this
@@ -20,9 +22,13 @@ public class MainActivity extends AppCompatActivity {
         mysnipper = new snipper();
         if(mysnipper.isNetWorkAvailable(this)){
             mysnipper.login("","");
+
             mysnipper.getCFPcatalogPageList("machine learning");
             mysnipper.getCFPMyListPageList(1);
-            mysnipper.getCFPMainPageList();
+            List<cfpMetaClass> test = mysnipper.getCFPMainPageList();
+            for(int i = 0 ; i < test.size() ; i++){
+                mysnipper.getEventContent(test.get(1).Link);
+            }
         }
 
         else

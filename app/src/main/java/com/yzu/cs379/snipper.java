@@ -48,8 +48,6 @@ public class snipper {
                     conn.method(Connection.Method.POST);
                     conn.timeout(30000);
                     Connection.Response response = conn.execute();
-                    //Connection.Response response = Jsoup.connect(Url).data("accountsel",account).data("password",password).data("keepin","on").data("mode","login").header("User-Agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0").method(Connection.Method.POST).execute();
-                    Log.d("STATE",response.body());
                     this.cookie = response.cookies();
                     this.account = account;
 
@@ -270,5 +268,68 @@ public class snipper {
 
         return ret;
     }
+    public eventContentClass getEventContent(String Link){
+        eventContentClass ret = new eventContentClass();
+        Runnable runnable = () -> {
+            try{
+                Connection conn = Jsoup.connect(Link);
+                conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
+                if(cookie != null && cookie.containsKey("accountkey")){
+                    conn.cookie("accountkey",cookie.get("accountkey"));
+                }
+                conn.method(Connection.Method.POST);
+                conn.timeout(30000);
+                Connection.Response response = conn.execute();
+                Document document = response.parse();
 
+                Elements meta = document.getElementsByClass("gglu").first().select("tbody > tr");
+                Element catlog = document.getElementsByClass("gglu").last();
+
+                if(catlog.select("tbody") != null){
+                    ret.catalog = new ArrayList<>();
+                    Elements catlogs = catlog.select("tbody > tr").last().select("td > h5 > a");
+                    for(int i = 1 ; i < catlogs.size() ; i++){
+                        ret.catalog.add(catlogs.get(i).text());
+                    }
+                }
+
+                for(int i = 0 ; i < meta.size() ; i++){
+                    switch (meta.get(i).select("th").first().text()){
+                        case "When":
+                            ret.When = meta.get(i).select("td").text();
+                            break;
+                        case "Where":
+                            ret.Where  = meta.get(i).select("td").text();
+                            break;
+                        case "Submission Deadline" :
+                            ret.SubmissionDeadLine  = meta.get(i).select("td").text();;
+                            break;
+                        case "Notification Due":
+                            ret.NotificationDue  = meta.get(i).select("td").text();
+                            break;
+                        case "Final Version Due":
+                            ret.FinalVersionDue = meta.get(i).select("td").text();
+                            break;
+
+                    }
+                }
+
+
+
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        };
+
+        Thread  td = new Thread(runnable);
+        td.start();
+        try{
+            td.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        return ret;
+
+    }
 }
