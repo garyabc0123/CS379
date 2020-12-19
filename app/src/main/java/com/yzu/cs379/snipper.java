@@ -222,11 +222,11 @@ public class snipper {
         return ret;
 
     }
-    public List<cfpMetaClass> getCFPcatalogPageList(String catalogName){
+    public List<cfpMetaClass> getCFPcatalogPageList(String catalogName,int page){
         List<cfpMetaClass> ret = new ArrayList<>();
         Runnable runable = () -> {
             try {
-                String url =  cfpLink + "/cfp/call?conference=" + catalogName;
+                String url =  cfpLink + "/cfp/call?conference=" + catalogName + "&page="+ Integer.toString(page);
                 Connection conn = Jsoup.connect(url);
                 conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
                 if(cookie != null && cookie.containsKey("accountkey")){
@@ -313,6 +313,7 @@ public class snipper {
 
                     }
                 }
+                ret.webContent = document.getElementsByClass("cfp").get(0).html();
 
 
 

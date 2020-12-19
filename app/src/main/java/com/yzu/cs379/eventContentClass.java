@@ -12,5 +12,5 @@ public class eventContentClass {
     public String NotificationDue;
     public String FinalVersionDue;
     public List<String> catalog;
-    public Document webContent;
+    public String  webContent;
 }
