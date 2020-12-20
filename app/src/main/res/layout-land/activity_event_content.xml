@@ -55,6 +55,7 @@
                         android:text=""
                         android:scrollbars="vertical"
                         android:textColor="@color/white"
+                        android:autoSizeTextType="uniform"
                         android:textSize="45dp"></TextView>
                 </RelativeLayout>
 

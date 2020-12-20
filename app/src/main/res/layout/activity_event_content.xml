@@ -51,6 +51,7 @@
                             android:gravity="right"
                             android:text=""
                             android:textColor="@color/white"
+                            android:autoSizeTextType="uniform"
                             android:textSize="45dp"></TextView>
                     </RelativeLayout>
 
