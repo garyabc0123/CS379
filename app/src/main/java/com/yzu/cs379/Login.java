@@ -38,7 +38,12 @@ public class Login extends AppCompatActivity {
             myProgressBar.setVisibility(View.VISIBLE);
             Runnable run = () -> {
                 if(!mysnipper.login(account.getText().toString(),password.getText().toString())){
-
+                    myProgressBar.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            myProgressBar.setVisibility(View.GONE);
+                        }
+                    });
 
                     return;
                 }
@@ -50,7 +55,7 @@ public class Login extends AppCompatActivity {
                 });
                 //大便用程式碼
                 List<cfpMetaClass> test = mysnipper.getCFPMainPageList();
-                mysnipper.GoogleSearch("test");
+
                 for(int i = 0 ; i < test.size() ; i++){
                     Intent intentToEventContent = new Intent(this,event_content.class);
                     Bundle bag = new Bundle();
@@ -73,7 +78,7 @@ public class Login extends AppCompatActivity {
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-            myProgressBar.setVisibility(View.GONE);
+
             if(!mysnipper.iflogin())
                 Toast.makeText(this,"Account Not found",Toast.LENGTH_SHORT).show();
 
@@ -82,4 +87,11 @@ public class Login extends AppCompatActivity {
         else
             Toast.makeText(this,"Please check your Network",Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        System.exit(0);
+
+    }
+
 }
