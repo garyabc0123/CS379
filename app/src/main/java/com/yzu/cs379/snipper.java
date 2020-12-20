@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 
 import org.jsoup.Connection;
@@ -26,6 +27,7 @@ public class snipper {
     private Map<String, String> cookie;
     private String account;
     private final String cfpLink = "http://www.wikicfp.com";
+    private final String googleSearch = "https://www.google.com/search";
     public void snipper(){
         account = "";
         cookie = new HashMap<>();
@@ -426,4 +428,37 @@ public class snipper {
             e.printStackTrace();
         }
     }
+    public List<Pair<String,String>> GoogleSearch(String input){
+        List<Pair<String,String>> ret = new ArrayList<>();
+        Runnable runnable = ()->{
+            try{
+                String url = googleSearch + "?q=" + input + " site:www.wikicfp.com/cfp/servlet/event.showcfp" + "&num=20";
+                Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
+                Elements res = doc.select("h3.r > a");
+
+                for(Element re : res){
+                    Pair<String,String> temp = new Pair<>(re.text(),re.attr("href"));
+                    ret.add(temp);
+                }
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+
+        };
+        Thread  td = new Thread(runnable);
+        td.start();
+        try{
+            td.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+
+
+
+
+
+        return ret;
+    }
+
 }
