@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import java.util.List;
 
@@ -49,4 +50,8 @@ public class MainActivity extends AppCompatActivity {
         else
             Log.d("state","network error");
     }
+
+
+
+
 }
