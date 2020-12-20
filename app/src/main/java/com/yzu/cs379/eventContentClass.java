@@ -13,4 +13,5 @@ public class eventContentClass {
     public String FinalVersionDue;
     public List<String> catalog;
     public String  webContent;
+    public boolean inMyList;
 }

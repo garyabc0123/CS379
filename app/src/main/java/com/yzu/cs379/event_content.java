@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,6 +24,9 @@ public class event_content extends AppCompatActivity {
     private RecyclerView catalogRecyclerView;
     private catlogAdapter myAdapter;
     private WebView myWeb;
+    private String myLink;
+    private ImageButton heart;
+    private eventContentClass myEvent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,13 +37,21 @@ public class event_content extends AppCompatActivity {
         title = (TextView)findViewById(R.id.title);
         catalogRecyclerView = (RecyclerView)findViewById(R.id.catlogView);
         myWeb = (WebView)findViewById(R.id.webviewer);
+        myLink = myIntent.getExtras().getString("link");
+        heart = (ImageButton)findViewById(R.id.heart);
 
         mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
-        eventContentClass myEvent = mysnipper.getEventContent(myIntent.getExtras().getString("link"));
+        myEvent = mysnipper.getEventContent(myLink);
 
 
 
         title.setText(myEvent.eventName);
+        if(myEvent.inMyList){
+            heart.setImageResource(R.drawable.heart);
+        }else{
+            heart.setImageResource(R.drawable.holo_heart);
+        }
+
 
         catalogRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         myAdapter = new catlogAdapter(myEvent.catalog);
@@ -50,6 +63,30 @@ public class event_content extends AppCompatActivity {
 
     }
 
+    public void OnClickShare(View view){
+        Intent share = new Intent();
+        share.setAction(Intent.ACTION_SEND);
+        share.putExtra(Intent.EXTRA_TEXT,myLink);
+        share.setType("text/plain");
+        startActivity(share);
+    }
+
+    public void onClickOpenInBrowser(View view){
+        Intent openBrowser = new Intent(Intent.ACTION_VIEW);
+        openBrowser.setData(Uri.parse(myLink));
+        startActivity(openBrowser);
+    }
+    public void onClickAddToMyList(View view){
+
+        if(myEvent.inMyList){
+            heart.setImageResource(R.drawable.holo_heart);
+            mysnipper.removeFromMyList(myLink);
+        }else{
+            heart.setImageResource(R.drawable.heart);
+            mysnipper.addToMyList(myLink);
+        }
+        myEvent.inMyList = !myEvent.inMyList;
+    }
 
     class catlogAdapter extends RecyclerView.Adapter<catlogAdapter.ViewHolder>{
         private List<String> myData;

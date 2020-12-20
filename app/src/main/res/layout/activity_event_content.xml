@@ -20,7 +20,7 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="600dp"
             >
 
             <View
@@ -54,46 +54,49 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginVertical="10dp"
             android:orientation="horizontal">
 
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/share"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginVertical="2dp"
                 android:layout_weight="1"
                 android:background="@color/white"
+                android:onClick="OnClickShare"
                 app:srcCompat="@drawable/ic_share" />
 
             <ImageButton
-                android:id="@+id/imageButton2"
+                android:id="@+id/openBrowser"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginVertical="2dp"
                 android:layout_weight="1"
                 android:background="@color/white"
+                android:onClick="onClickOpenInBrowser"
                 app:srcCompat="@drawable/link" />
 
             <ImageButton
-                android:id="@+id/imageButton3"
+                android:id="@+id/heart"
                 android:layout_width="wrap_content"
                 android:layout_height="70dp"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginVertical="2dp"
                 android:layout_weight="1"
                 android:background="@color/white"
-                app:srcCompat="@drawable/heart" />
+                android:onClick="onClickAddToMyList"
+                app:srcCompat="@drawable/holo_heart" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/catlogView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="60dp"
              />
 
         <WebView
