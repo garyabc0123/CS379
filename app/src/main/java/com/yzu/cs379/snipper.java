@@ -77,7 +77,7 @@ public class snipper {
         return ret;
 
     }
-    public boolean isNetWorkAvailable(View.OnClickListener activity){
+    public boolean isNetWorkAvailable(Activity activity){
         Context context = activity.getApplicationContext();
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(cm == null){
