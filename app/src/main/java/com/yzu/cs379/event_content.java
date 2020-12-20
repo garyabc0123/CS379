@@ -18,6 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.flexbox.FlexboxLayoutManager;
+
 import java.util.List;
 
 public class event_content extends AppCompatActivity {
@@ -92,6 +94,7 @@ public class event_content extends AppCompatActivity {
             }
             Runnable newRun = ()-> {
                 catalogRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+                //catalogRecyclerView.setLayoutManager(new FlexboxLayoutManager(this));
                 myAdapter = new catlogAdapter(myEvent.catalog);
                 catalogRecyclerView.setAdapter(myAdapter);
             };
