@@ -31,19 +31,20 @@ public class MainActivity extends AppCompatActivity {
             test = mysnipper.getCFPMyListPageList(1);
             for(int i = 0 ; i < test.size() ; i++){
                 mysnipper.getEventContent(test.get(1).Link);
-            }
-            test = mysnipper.getCFPMainPageList();
+            }*/
+            List<cfpMetaClass> test = mysnipper.getCFPMainPageList();
             for(int i = 0 ; i < test.size() ; i++){
-                mysnipper.getEventContent(test.get(1).Link);
+                Intent intentToEventContent = new Intent(this,event_content.class);
+                Bundle bag = new Bundle();
+                bag.putString("link",test.get(i).Link);
+                bag.putString("token",mysnipper.getToken());
+                bag.putString("account",mysnipper.getAccount());
+                intentToEventContent.putExtras(bag);
+                startActivity(intentToEventContent);
+
             }
-            */
-            Intent intentToEventContent = new Intent(this,event_content.class);
-            Bundle bag = new Bundle();
-            bag.putString("link","http://www.wikicfp.com/cfp/servlet/event.showcfp?eventid=120560&copyownerid=31491");
-            bag.putString("token",mysnipper.getToken());
-            bag.putString("account",mysnipper.getAccount());
-            intentToEventContent.putExtras(bag);
-            startActivity(intentToEventContent);
+
+
         }
 
         else

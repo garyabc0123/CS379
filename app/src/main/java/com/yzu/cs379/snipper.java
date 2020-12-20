@@ -93,6 +93,11 @@ public class snipper {
         }
         return false;
     }
+    public boolean iflogin(){
+        if(cookie != null && cookie.containsKey("accountkey")&& !cookie.get("accountkey").equals(""))
+            return true;
+        return false;
+    }
     public String getToken(){
         if(cookie ==null)
             return "";

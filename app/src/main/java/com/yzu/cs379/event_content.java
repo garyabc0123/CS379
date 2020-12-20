@@ -1,10 +1,10 @@
 package com.yzu.cs379;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -27,10 +29,17 @@ public class event_content extends AppCompatActivity {
     private String myLink;
     private ImageButton heart;
     private eventContentClass myEvent;
+    private ProgressBar myProgressBar;
+
+
+
+    @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_content);
+        myProgressBar = (ProgressBar)findViewById(R.id.prohressBar);
+
 
         Intent myIntent = getIntent();
         mysnipper = new snipper();
@@ -40,27 +49,94 @@ public class event_content extends AppCompatActivity {
         myLink = myIntent.getExtras().getString("link");
         heart = (ImageButton)findViewById(R.id.heart);
 
-        mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
-        myEvent = mysnipper.getEventContent(myLink);
+
+        Runnable runnable = () -> {
+            myProgressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    myProgressBar.setVisibility(View.VISIBLE);
+                }
+            });
 
 
 
-        title.setText(myEvent.eventName);
-        if(myEvent.inMyList){
-            heart.setImageResource(R.drawable.heart);
-        }else{
-            heart.setImageResource(R.drawable.holo_heart);
-        }
+            while (!mysnipper.isNetWorkAvailable(this));
+            mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
+            myEvent = mysnipper.getEventContent(myLink);
 
 
-        catalogRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
-        myAdapter = new catlogAdapter(myEvent.catalog);
-        catalogRecyclerView.setAdapter(myAdapter);
+            title.post(new Runnable() {
+                @Override
+                public void run() {
+                    title.setText(myEvent.eventName);
+                }
+            });
 
-        myWeb.getSettings().setJavaScriptEnabled(true);
-        myWeb.setWebViewClient(new WebViewClient());
-        myWeb.loadData(myEvent.webContent,"text/html","UTF-8");
 
+            if(myEvent.inMyList){
+                heart.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        heart.setImageResource(R.drawable.heart);
+                    }
+                });
+
+            }else{
+                heart.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        heart.setImageResource(R.drawable.holo_heart);
+                    }
+                });
+
+            }
+            Runnable newRun = ()-> {
+                catalogRecyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+                myAdapter = new catlogAdapter(myEvent.catalog);
+                catalogRecyclerView.setAdapter(myAdapter);
+            };
+            catalogRecyclerView.post(newRun);
+
+            myWeb.post(new Runnable() {
+                @Override
+                public void run() {
+                    myWeb.getSettings().setJavaScriptEnabled(true);
+                    myWeb.setWebViewClient(new WebViewClient());
+                    myWeb.loadData(myEvent.webContent,"text/html","UTF-8");
+                }
+            });
+
+            myProgressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    myProgressBar.setVisibility(View.GONE);
+                }
+            });
+
+        };
+
+        Thread  td = new Thread(runnable);
+        td.start();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        myProgressBar.setVisibility(View.GONE);
     }
 
     public void OnClickShare(View view){
@@ -77,6 +153,10 @@ public class event_content extends AppCompatActivity {
         startActivity(openBrowser);
     }
     public void onClickAddToMyList(View view){
+        if(!mysnipper.iflogin()){
+            Toast.makeText(this,"Please login first",Toast.LENGTH_LONG).show();
+            return;
+        }
 
         if(myEvent.inMyList){
             heart.setImageResource(R.drawable.holo_heart);
