@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import android.view.View;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -75,7 +76,7 @@ public class snipper {
         return ret;
 
     }
-    public boolean isNetWorkAvailable(Activity activity){
+    public boolean isNetWorkAvailable(View.OnClickListener activity){
         Context context = activity.getApplicationContext();
         ConnectivityManager cm = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if(cm == null){

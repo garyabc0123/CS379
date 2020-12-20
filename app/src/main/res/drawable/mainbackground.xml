@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/dot"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot1"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot2"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot3"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot4"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot5"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot6"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot7"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot8"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot9"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot910"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot911"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot912"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot913"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot914"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot915"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot916"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot917"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot918"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot919"
+        android:duration="150"/>
+    <item android:drawable="@drawable/dot920"
+        android:duration="150"/>
+
+
+</animation-list>
