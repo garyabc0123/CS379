@@ -12,6 +12,9 @@ import java.util.List;
 //
 //ever should have simple readme like this
 //this activity only do once thing, loading manpage activity
+
+//DONOT ADD MAIN PROGRAM IN THIS
+//USING TEST
 public class MainActivity extends AppCompatActivity {
 
     private snipper mysnipper;
