@@ -23,35 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mysnipper = new snipper();
-        if(mysnipper.isNetWorkAvailable(this)){
-            mysnipper.login("","");
-            /*
-            List<cfpMetaClass> test = mysnipper.getCFPcatalogPageList("machine learning",1);
-            for(int i = 0 ; i < test.size() ; i++){
-                mysnipper.getEventContent(test.get(1).Link);
-            }
-            test = mysnipper.getCFPMyListPageList(1);
-            for(int i = 0 ; i < test.size() ; i++){
-                mysnipper.getEventContent(test.get(1).Link);
-            }*/
-            List<cfpMetaClass> test = mysnipper.getCFPMainPageList();
-            mysnipper.GoogleSearch("test");
-            for(int i = 0 ; i < test.size() ; i++){
-                Intent intentToEventContent = new Intent(this,event_content.class);
-                Bundle bag = new Bundle();
-                bag.putString("link",test.get(i).Link);
-                bag.putString("token",mysnipper.getToken());
-                bag.putString("account",mysnipper.getAccount());
-                intentToEventContent.putExtras(bag);
-                startActivity(intentToEventContent);
-
-            }
-
-
-        }
-
-        else
-            Log.d("state","network error");
+        Intent intentToLogin = new Intent(this,Login.class);
+        startActivity(intentToLogin);
     }
 }

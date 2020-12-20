@@ -12,9 +12,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CS379"
-        >
-        <activity android:name=".event_content"></activity>
+        android:theme="@style/Theme.CS379">
+        <activity android:name=".Login"></activity>
+        <activity android:name=".event_content" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

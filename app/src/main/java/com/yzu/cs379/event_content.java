@@ -103,7 +103,7 @@ public class event_content extends AppCompatActivity {
             myWeb.post(new Runnable() {
                 @Override
                 public void run() {
-                    myWeb.getSettings().setJavaScriptEnabled(true);
+
                     myWeb.setWebViewClient(new WebViewClient());
                     myWeb.loadData(myEvent.webContent,"text/html","UTF-8");
                 }
@@ -120,6 +120,8 @@ public class event_content extends AppCompatActivity {
 
         Thread  td = new Thread(runnable);
         td.start();
+
+
 
 
 
