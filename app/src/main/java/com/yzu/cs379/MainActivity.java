@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 mysnipper.getEventContent(test.get(1).Link);
             }*/
             List<cfpMetaClass> test = mysnipper.getCFPMainPageList();
+            mysnipper.GoogleSearch("test");
             for(int i = 0 ; i < test.size() ; i++){
                 Intent intentToEventContent = new Intent(this,event_content.class);
                 Bundle bag = new Bundle();

@@ -433,11 +433,12 @@ public class snipper {
         Runnable runnable = ()->{
             try{
                 String url = googleSearch + "?q=" + input + " site:www.wikicfp.com/cfp/servlet/event.showcfp" + "&num=20";
-                Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0").get();
-                Elements res = doc.select("h3.r > a");
+                Document doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0").get();
+                Elements res = doc.getElementsByClass("rc");
 
-                for(Element re : res){
-                    Pair<String,String> temp = new Pair<>(re.text(),re.attr("href"));
+                for(int i = 0 ; i < res.size() ; i++){
+                    Element re = res.get(i).select("a").first();
+                    Pair<String,String> temp = new Pair<>(re.select("h3 > span").text(),re.attr("href"));
                     ret.add(temp);
                 }
 
