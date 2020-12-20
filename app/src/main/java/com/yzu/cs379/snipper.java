@@ -72,7 +72,8 @@ public class snipper {
         }
 
         boolean ret =  cookie.containsKey("accountkey"); //if login success return true
-        cookie.put("accountkey","");
+        if(!ret)
+            cookie.put("accountkey","");
         return ret;
 
     }
@@ -323,6 +324,11 @@ public class snipper {
                 ret.webContent = document.getElementsByClass("cfp").get(0).html();
                 ret.eventName = document.getElementsByAttributeValue("property","v:description").first().text();
 
+                if(document.getElementsByAttributeValue("value","Add to My List").size() != 0){
+                    ret.inMyList = false;
+                }else if(document.getElementsByAttributeValue("value","Delete").size() != 0){
+                    ret.inMyList = true;
+                }
 
 
             }catch (IOException e){
@@ -339,5 +345,80 @@ public class snipper {
         }
         return ret;
 
+    }
+    public void addToMyList(String link){
+        //http://www.wikicfp.com/cfp/servlet/event.copycfp?getaddress=event.showcfp&eventid=120617&copyownerid=165875&option=x
+        //http://www.wikicfp.com/cfp/servlet/event.delcfp?getaddress=event.showcfp&eventid=120617&copyownerid=165875
+        //http://www.wikicfp.com/cfp/servlet/event.showcfp?eventid=120617&copyownerid=165875
+        Runnable runnable = () -> {
+            try{
+                String[] linkSpilt = link.split("\\?");
+                if(linkSpilt.length < 2){
+                    return;
+                }
+                String Flink = "http://www.wikicfp.com/cfp/servlet/event.copycfp?getaddress=event.showcfp&" + linkSpilt[1] + "&option=x";
+                Connection conn = Jsoup.connect(Flink);
+                conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
+                if(cookie != null && cookie.containsKey("accountkey") && !cookie.get("accountkey").equals("")){
+                    conn.cookie("accountkey",cookie.get("accountkey"));
+                }
+                conn.method(Connection.Method.GET);
+                conn.timeout(30000);
+                Connection.Response response = conn.execute();
+                Log.d("state",Integer.toString(response.body().length()));
+
+
+
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        };
+
+        Thread  td = new Thread(runnable);
+        td.start();
+        try{
+            td.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+    }
+    public void removeFromMyList(String link){
+        //http://www.wikicfp.com/cfp/servlet/event.copycfp?getaddress=event.showcfp&eventid=120617&copyownerid=165875&option=x
+        //http://www.wikicfp.com/cfp/servlet/event.delcfp?getaddress=event.showcfp&eventid=120617&copyownerid=165875
+        //http://www.wikicfp.com/cfp/servlet/event.showcfp?eventid=120617&copyownerid=165875
+        Runnable runnable = () -> {
+            try{
+                String[] linkSpilt = link.split("\\?");
+                if(linkSpilt.length < 2){
+                    return;
+                }
+                String Flink = "http://www.wikicfp.com/cfp/servlet/event.delcfp?getaddress=event.showcfp&" + linkSpilt[1];
+                Connection conn = Jsoup.connect(Flink);
+                conn.header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:84.0) Gecko/20100101 Firefox/84.0");
+                if(cookie != null && cookie.containsKey("accountkey") && !cookie.get("accountkey").equals("")){
+                    conn.cookie("accountkey",cookie.get("accountkey"));
+                }
+                conn.method(Connection.Method.GET);
+                conn.timeout(30000);
+                Connection.Response response = conn.execute();
+
+                Log.d("state",Integer.toString(response.body().length()));
+
+
+
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        };
+
+        Thread  td = new Thread(runnable);
+        td.start();
+        try{
+            td.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
     }
 }
