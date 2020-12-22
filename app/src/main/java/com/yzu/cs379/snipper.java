@@ -302,7 +302,9 @@ public class snipper {
 
                 if(catlog.select("tbody") != null){
                     ret.catalog = new ArrayList<>();
-                    Elements catlogs = catlog.select("tbody > tr").last().select("td > h5 > a");
+                    Elements catlogs = catlog.select("tbody > tr");
+                    if(catlogs.size() != 0)
+                        catlogs = catlogs.last().select("td > h5 > a");
                     for(int i = 1 ; i < catlogs.size() ; i++){
                         ret.catalog.add(catlogs.get(i).text());
                     }
