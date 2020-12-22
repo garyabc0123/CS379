@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,7 +33,7 @@ public class lobby extends AppCompatActivity {
     private myListAdapter adapter;
     private snipper mysnipper;
     private ProgressBar myProgressBar;
-
+    private DBhelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class lobby extends AppCompatActivity {
         Intent myIntent = getIntent();
         mysnipper = new snipper();
         mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
+        myDB = new DBhelper(this);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerlayout);
@@ -60,7 +63,15 @@ public class lobby extends AppCompatActivity {
         myProgressBar.setVisibility(View.VISIBLE);
 
         Runnable runnable = () -> {
-            adapter = new myListAdapter(mysnipper.getCFPMainPageList());
+            List<CatalogClass> cat = myDB.getUserAllCatalog(mysnipper.getAccount());
+            List<cfpMetaClass> meta = mysnipper.getCFPMainPageList();
+            List<eventContentClass> event = new ArrayList<>();
+            for(int i = 0 ; i < meta.size() ; i++){
+                event.add(mysnipper.getEventContent(meta.get(i).Link));
+            }
+
+
+            adapter = new myListAdapter(meta,event,cat);
             recyclerView.post(new Runnable() {
                 @Override
                 public void run() {
@@ -98,7 +109,14 @@ public class lobby extends AppCompatActivity {
             adapter = null;
             myProgressBar.setVisibility(View.VISIBLE);
             Runnable runnable = () -> {
-                adapter = new myListAdapter(mysnipper.getCFPMainPageList());
+                List<cfpMetaClass> meta = mysnipper.getCFPMainPageList();
+                List<eventContentClass> event = new ArrayList<>();
+                for(int i = 0 ; i < meta.size() ; i++){
+                    event.add(mysnipper.getEventContent(meta.get(i).Link));
+                }
+                List<CatalogClass> cat = myDB.getUserAllCatalog(mysnipper.getAccount());
+
+                adapter = new myListAdapter(meta,event,cat);
                 recyclerView.post(new Runnable() {
                     @Override
                     public void run() {
@@ -124,9 +142,12 @@ public class lobby extends AppCompatActivity {
 
     public class myListAdapter extends RecyclerView.Adapter<myListAdapter.ViewHolder> {
         private List<cfpMetaClass> myData;
-
-        myListAdapter(List<cfpMetaClass> input){
+        private List<eventContentClass> contentClasses;
+        private List<CatalogClass> catalog;
+        myListAdapter(List<cfpMetaClass> input ,List<eventContentClass> content , List<CatalogClass> cata){
             myData = input;
+            contentClasses = content;
+            catalog = cata;
         }
 
         class ViewHolder extends RecyclerView.ViewHolder{
@@ -173,6 +194,30 @@ public class lobby extends AppCompatActivity {
             holder.eventContent.setText(myData.get(position).Brief);
             holder.when.setText(myData.get(position).When);
             holder.where.setText(myData.get(position).Where);
+
+            holder.imageView.setImageResource(R.drawable.magic_dot);
+            if(myData.get(position).inMyList){
+                holder.imageView.setColorFilter(Color.rgb(0xEB,0x57,0x57));
+                holder.imageView.setVisibility(View.VISIBLE);
+            }else{
+                holder.imageView.setVisibility(View.INVISIBLE);
+                boolean complete = false;
+                for(int i = 0 ; i < contentClasses.get(position).catalog.size() ; i++){
+                    for(int j = 0 ; j < catalog.size() ; j++){
+                        if(contentClasses.get(position).catalog.get(i).equals(catalog.get(j))){
+                            holder.imageView.setColorFilter(Color.rgb(catalog.get(i).r,catalog.get(i).g,catalog.get(i).b));
+                            holder.imageView.setVisibility(View.VISIBLE);
+                            complete = true;
+                        }
+                        if(complete)
+                            break;
+                    }
+                    if(complete)
+                        break;
+                }
+
+            }
+
             //holder.imageView.setImageDrawable(R.drawable.ic_notification_overlay);
         }
         @Override

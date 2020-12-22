@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
 
-            app:srcCompat="@android:drawable/ic_notification_overlay" />
+            app:srcCompat="@drawable/magic_dot" />
 
         <LinearLayout
             android:layout_width="match_parent"
