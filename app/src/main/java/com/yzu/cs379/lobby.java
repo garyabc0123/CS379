@@ -93,6 +93,8 @@ public class lobby extends AppCompatActivity {
 
         if(item.getItemId() == R.id.my_search){
             Toast.makeText(this,"TEST",Toast.LENGTH_SHORT).show();
+            Intent searchIntent = new Intent(this,SearchActivity.class);
+            startActivity(searchIntent);
 
         }else if(item.getItemId() == R.id.reflash){
             adapter = null;
