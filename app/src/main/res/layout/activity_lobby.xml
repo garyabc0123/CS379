@@ -12,13 +12,26 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <include layout="@layout/toolbar"></include>
-
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/list_item">
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/list_item">
 
-        </androidx.recyclerview.widget.RecyclerView>
+            </androidx.recyclerview.widget.RecyclerView>
+            <ProgressBar
+                android:id="@+id/prohressBarLogin"
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="145dp"
+                android:layout_height="132dp"
+                android:layout_gravity="center"
+                android:rotationX="25"
+                android:rotationY="49"
+                android:visibility="visible" />
+        </FrameLayout>
+
     </LinearLayout>
 
     <LinearLayout

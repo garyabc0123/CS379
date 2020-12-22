@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class lobby extends AppCompatActivity {
     private RecyclerView recyclerView;
     private myListAdapter adapter;
     private snipper mysnipper;
+    private ProgressBar myProgressBar;
 
 
     @Override
@@ -43,6 +45,7 @@ public class lobby extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawerlayout);
         recyclerView = (RecyclerView)findViewById(R.id.list_item);
+        myProgressBar = (ProgressBar)findViewById(R.id.prohressBarLogin);
 
 
 
@@ -54,8 +57,27 @@ public class lobby extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        adapter = new myListAdapter(mysnipper.getCFPMainPageList());
-        recyclerView.setAdapter(adapter);
+        myProgressBar.setVisibility(View.VISIBLE);
+
+        Runnable runnable = () -> {
+            adapter = new myListAdapter(mysnipper.getCFPMainPageList());
+            recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    recyclerView.setAdapter(adapter);
+                }
+            });
+
+            myProgressBar.post(new Runnable() {
+                @Override
+                public void run() {
+                    myProgressBar.setVisibility(View.GONE);
+                }
+            });
+        };
+
+        Thread  td = new Thread(runnable);
+        td.start();
 
     }
 
@@ -74,8 +96,27 @@ public class lobby extends AppCompatActivity {
 
         }else if(item.getItemId() == R.id.reflash){
             adapter = null;
-            adapter = new myListAdapter(mysnipper.getCFPMyListPageList(1));
-            recyclerView.setAdapter(adapter);
+            myProgressBar.setVisibility(View.VISIBLE);
+            Runnable runnable = () -> {
+                adapter = new myListAdapter(mysnipper.getCFPMainPageList());
+                recyclerView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
+
+                myProgressBar.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        myProgressBar.setVisibility(View.GONE);
+                    }
+                });
+            };
+
+            Thread  td = new Thread(runnable);
+            td.start();
+
         }
         return true;
     }
