@@ -69,7 +69,14 @@ public class lobby extends AppCompatActivity {
     @Override
     public boolean  onOptionsItemSelected(MenuItem item){
 
-        Toast.makeText(this,"TEST",Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.my_search){
+            Toast.makeText(this,"TEST",Toast.LENGTH_SHORT).show();
+
+        }else if(item.getItemId() == R.id.reflash){
+            adapter = null;
+            adapter = new myListAdapter(mysnipper.getCFPMyListPageList(1));
+            recyclerView.setAdapter(adapter);
+        }
         return true;
     }
 

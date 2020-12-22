@@ -38,21 +38,11 @@ public class Login extends AppCompatActivity {
             myProgressBar.setVisibility(View.VISIBLE);
             Runnable run = () -> {
                 if(!mysnipper.login(account.getText().toString(),password.getText().toString())){
-                    myProgressBar.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            myProgressBar.setVisibility(View.GONE);
-                        }
-                    });
+
 
                     return;
                 }
-                myProgressBar.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        myProgressBar.setVisibility(View.GONE);
-                    }
-                });
+
                 //大便用程式碼
 
                 //end
@@ -67,16 +57,18 @@ public class Login extends AppCompatActivity {
             }catch (InterruptedException e){
                 e.printStackTrace();
             }
-
+            myProgressBar.setVisibility(View.GONE);
             if(!mysnipper.iflogin())
                 Toast.makeText(this,"Account Not found",Toast.LENGTH_SHORT).show();
+            else{
+                Intent intentToEventContent = new Intent(this,lobby.class);
+                Bundle bag = new Bundle();
+                bag.putString("token",mysnipper.getToken());
+                bag.putString("account",mysnipper.getAccount());
+                intentToEventContent.putExtras(bag);
+                startActivity(intentToEventContent);
+            }
 
-            Intent intentToEventContent = new Intent(this,lobby.class);
-            Bundle bag = new Bundle();
-            bag.putString("token",mysnipper.getToken());
-            bag.putString("account",mysnipper.getAccount());
-            intentToEventContent.putExtras(bag);
-            startActivity(intentToEventContent);
 
         }
 
