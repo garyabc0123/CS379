@@ -45,6 +45,7 @@ public class event_content extends AppCompatActivity {
 
         Intent myIntent = getIntent();
         mysnipper = new snipper();
+        mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
         title = (TextView)findViewById(R.id.title);
         catalogRecyclerView = (RecyclerView)findViewById(R.id.catlogView);
         myWeb = (WebView)findViewById(R.id.webviewer);
@@ -63,7 +64,7 @@ public class event_content extends AppCompatActivity {
 
 
             while (!mysnipper.isNetWorkAvailable(this));
-            mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
+
             myEvent = mysnipper.getEventContent(myLink);
 
 

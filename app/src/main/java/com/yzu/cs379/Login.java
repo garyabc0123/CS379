@@ -54,18 +54,7 @@ public class Login extends AppCompatActivity {
                     }
                 });
                 //大便用程式碼
-                List<cfpMetaClass> test = mysnipper.getCFPMainPageList();
 
-                for(int i = 0 ; i < test.size() ; i++){
-                    Intent intentToEventContent = new Intent(this,event_content.class);
-                    Bundle bag = new Bundle();
-                    bag.putString("link",test.get(i).Link);
-                    bag.putString("token",mysnipper.getToken());
-                    bag.putString("account",mysnipper.getAccount());
-                    intentToEventContent.putExtras(bag);
-                    startActivity(intentToEventContent);
-
-                }
                 //end
             };
 
@@ -81,6 +70,13 @@ public class Login extends AppCompatActivity {
 
             if(!mysnipper.iflogin())
                 Toast.makeText(this,"Account Not found",Toast.LENGTH_SHORT).show();
+
+            Intent intentToEventContent = new Intent(this,lobby.class);
+            Bundle bag = new Bundle();
+            bag.putString("token",mysnipper.getToken());
+            bag.putString("account",mysnipper.getAccount());
+            intentToEventContent.putExtras(bag);
+            startActivity(intentToEventContent);
 
         }
 
