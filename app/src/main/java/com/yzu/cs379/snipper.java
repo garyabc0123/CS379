@@ -257,6 +257,8 @@ public class snipper {
                     Element tempDocFirst = mainTable.get(iterator);
                     Element tempDocSecond = mainTable.get(iterator + 1);
                     cfpMetaClass temp = new cfpMetaClass();
+                    if(tempDocFirst.select("td").size() <= 1)
+                        break;
                     temp.Link =  cfpLink + tempDocFirst.select("a").first().attr("href");
                     temp.Brief = tempDocFirst.select("td").get(1).text();
                     temp.Event = tempDocFirst.select("a").first().text();
