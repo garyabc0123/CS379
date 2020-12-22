@@ -143,7 +143,7 @@ public class snipper {
                     temp.When = tempDocSecond.select("td").get(0).text();
                     temp.Where = tempDocSecond.select("td").get(1).text();
                     temp.Deadline = tempDocSecond.select("td").get(2).text();
-                    temp.inMyList = tempDocSecond.getElementsByAttributeValue("align","center").size() != 0;
+                    temp.inMyList = tempDocSecond.getElementsByAttributeValue("align","center").size() != 0 && tempDocSecond.getElementsByAttributeValue("align","center").text().equals("in My List");
                     ret.add(temp);
                     iterator += 2;
 
@@ -212,7 +212,7 @@ public class snipper {
                     temp.When = tempDocSecond.select("td").get(0).text();
                     temp.Where = tempDocSecond.select("td").get(1).text();
                     temp.Deadline = tempDocSecond.select("td").get(2).text();
-                    temp.inMyList = tempDocSecond.getElementsByAttributeValue("align","center").size() != 0;
+                    temp.inMyList = tempDocSecond.getElementsByAttributeValue("align","center").size() != 0 && tempDocSecond.getElementsByAttributeValue("align","center").text().equals("in My List");
                     ret.add(temp);
                     iterator += 2;
 
