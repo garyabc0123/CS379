@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <include layout="@layout/toolbar"></include>
+        <include layout="@layout/toolbar"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -21,14 +21,13 @@
                 android:id="@+id/list_item">
 
             </androidx.recyclerview.widget.RecyclerView>
+
             <ProgressBar
                 android:id="@+id/prohressBarLogin"
                 style="?android:attr/progressBarStyleLarge"
-                android:layout_width="145dp"
-                android:layout_height="132dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:rotationX="25"
-                android:rotationY="49"
                 android:visibility="visible" />
         </FrameLayout>
 
@@ -59,12 +58,12 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginBottom="20dp"
                         android:background="@color/green_1"
+                        android:contentDescription="colored_dot"
                         app:srcCompat="@drawable/add_icon"
-                        ></ImageButton>
+                        />
                 </RelativeLayout>
 
             </FrameLayout>

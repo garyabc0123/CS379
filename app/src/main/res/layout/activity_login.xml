@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,16 +24,16 @@
                 android:layout_marginTop="60dp"
                 android:text="@string/cfp"
                 android:textColor="@color/gray_5"
-                android:textSize="100sp"></TextView>
+                android:textSize="100sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="50dp"
-                android:text="Login"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="80dp"
+                android:text="@string/login"
                 android:textColor="@color/gray_5"
-                android:textSize="50sp"></TextView>
+                android:textSize="30sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,23 +43,25 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginStart="50dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="10dp"
                     android:text="Account: "
                     android:textColor="@color/gray_5"
-                    android:textSize="30sp"></TextView>
+                    android:textSize="30sp"/>
 
                 <EditText
                     android:id="@+id/account"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="account"
+                    android:inputType="text"
+                    android:autofillHints="abc"
                     android:textColor="@color/gray_5"
                     android:textColorHint="@color/gray_5"
-                    android:textSize="20sp"></EditText>
+                    android:textSize="20sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -71,24 +72,25 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
+                    android:layout_marginStart="50dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="10dp"
                     android:text="Password: "
                     android:textColor="@color/gray_5"
-                    android:textSize="30sp"></TextView>
+                    android:textSize="30sp"/>
 
                 <EditText
                     android:id="@+id/pass"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:hint="password"
+                    android:autofillHints="abc"
                     android:inputType="textPassword"
                     android:textColor="@color/gray_5"
                     android:textColorHint="@color/gray_5"
-                    android:textSize="20sp"></EditText>
+                    android:textSize="20sp"/>
             </LinearLayout>
 
             <Button
@@ -101,7 +103,7 @@
                 android:outlineSpotShadowColor="@color/gray_5"
                 android:text="Login in"
                 android:textColor="@color/gray_5"
-                android:textSize="20sp"></Button>
+                android:textSize="20sp"/>
         </LinearLayout>
 
         <ProgressBar

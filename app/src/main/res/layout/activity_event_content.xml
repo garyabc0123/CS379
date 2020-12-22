@@ -25,7 +25,7 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="600dp">
+                    android:layout_height="300dp">
 
                     <View
                         android:layout_width="match_parent"
@@ -33,7 +33,7 @@
 
                         android:background="@color/blue_1"
 
-                        ></View>
+                        />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -44,15 +44,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
                             android:layout_alignParentBottom="true"
                             android:layout_marginHorizontal="30dp"
                             android:layout_marginBottom="30dp"
-                            android:gravity="right"
+                            android:autoSizeTextType="uniform"
+                            android:gravity="start"
                             android:text=""
                             android:textColor="@color/white"
-                            android:autoSizeTextType="uniform"
-                            android:textSize="45dp"></TextView>
+                            android:textSize="30sp"/>
                     </RelativeLayout>
 
                 </FrameLayout>
@@ -73,6 +72,7 @@
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:onClick="OnClickShare"
+                        android:contentDescription="share"
                         app:srcCompat="@drawable/ic_share" />
 
                     <ImageButton
@@ -84,6 +84,7 @@
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:onClick="onClickOpenInBrowser"
+                        android:contentDescription="op_browser"
                         app:srcCompat="@drawable/link" />
 
                     <ImageButton
@@ -95,6 +96,7 @@
                         android:layout_weight="1"
                         android:background="@color/white"
                         android:onClick="onClickAddToMyList"
+                        android:contentDescription="heart"
                         app:srcCompat="@drawable/holo_heart" />
                 </LinearLayout>
 

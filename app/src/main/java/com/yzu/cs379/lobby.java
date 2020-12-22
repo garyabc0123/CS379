@@ -189,6 +189,11 @@ public class lobby extends AppCompatActivity {
         if(item.getItemId() == R.id.my_search)
             Toast.makeText(this,"TEST",Toast.LENGTH_SHORT).show();
             Intent searchIntent = new Intent(this,SearchActivity.class);
+            Bundle bag = new Bundle();
+            bag.putString("token",mysnipper.getToken());
+            bag.putString("account",mysnipper.getAccount());
+            bag.putString("cat","");
+            searchIntent.putExtras(bag);
             startActivity(searchIntent);
 
         return true;
