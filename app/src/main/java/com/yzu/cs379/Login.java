@@ -65,6 +65,7 @@ public class Login extends AppCompatActivity {
                 Bundle bag = new Bundle();
                 bag.putString("token",mysnipper.getToken());
                 bag.putString("account",mysnipper.getAccount());
+                bag.putString("cat","");
                 intentToEventContent.putExtras(bag);
                 startActivity(intentToEventContent);
             }

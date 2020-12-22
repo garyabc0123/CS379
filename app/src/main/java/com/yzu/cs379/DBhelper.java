@@ -33,11 +33,11 @@ public class DBhelper extends SQLiteOpenHelper {
 
 
         String command = "CREATE TABLE " + CATALOGDATABASE_DATABASENAME + " (" +
-                CATALOGDATABASE_CATALOGNAME + "TEXT, " +
+                CATALOGDATABASE_CATALOGNAME + " TEXT, " +
                 CATALOGDATABASE_USERNAME + " TEXT, " +
-                CATALOGDATABASE_COLOR_R + "INTEGER, " +
-                CATALOGDATABASE_COLOR_G + "INTEGER, " +
-                CATALOGDATABASE_COLOR_B + "INTEGER " +
+                CATALOGDATABASE_COLOR_R + " INTEGER, " +
+                CATALOGDATABASE_COLOR_G + " INTEGER, " +
+                CATALOGDATABASE_COLOR_B + " INTEGER " +
                 ")";
         database.execSQL(command);
 
@@ -68,7 +68,7 @@ public class DBhelper extends SQLiteOpenHelper {
     }
     public void addCatalog(CatalogClass input){
         SQLiteDatabase db = this.getWritableDatabase();
-        String command = "SELECT * from " + CATALOGDATABASE_DATABASENAME + "where " + CATALOGDATABASE_USERNAME + " = '" + input.userName + "' AND " + CATALOGDATABASE_CATALOGNAME + " = '" + input.name +"'";
+        String command = "SELECT * from " + CATALOGDATABASE_DATABASENAME + " where " + CATALOGDATABASE_USERNAME + " = '" + input.userName + "' AND " + CATALOGDATABASE_CATALOGNAME + " = '" + input.name +"'";
         Cursor cursor = db.rawQuery(command,null);
         if(cursor.getCount() != 0){
             return;
