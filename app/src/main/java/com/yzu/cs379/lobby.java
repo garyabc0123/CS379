@@ -303,8 +303,8 @@ public class lobby extends AppCompatActivity {
                 boolean complete = false;
                 for(int i = 0 ; i < contentClasses.get(position).catalog.size() ; i++){
                     for(int j = 0 ; j < catalog.size() ; j++){
-                        if(contentClasses.get(position).catalog.get(i).equals(catalog.get(j))){
-                            holder.imageView.setColorFilter(Color.rgb(catalog.get(i).r,catalog.get(i).g,catalog.get(i).b));
+                        if(contentClasses.get(position).catalog.get(i).equals(catalog.get(j).name)){
+                            holder.imageView.setColorFilter(Color.rgb(catalog.get(j).r,catalog.get(j).g,catalog.get(j).b));
                             holder.imageView.setVisibility(View.VISIBLE);
                             complete = true;
                         }
