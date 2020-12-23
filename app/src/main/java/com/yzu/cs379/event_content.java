@@ -191,7 +191,14 @@ public class event_content extends AppCompatActivity {
                 textItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO
+                        int i = getAdapterPosition();
+                        Intent intent = new Intent(event_content.super.getBaseContext(),lobby.class);
+                        Bundle bag = new Bundle();
+                        bag.putString("token",mysnipper.getToken());
+                        bag.putString("account",mysnipper.getAccount());
+                        bag.putString("cat",myData.get(i));
+                        intent.putExtras(bag);
+                        startActivity(intent);
                     }
                 });
             }
