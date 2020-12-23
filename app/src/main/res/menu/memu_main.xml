@@ -6,11 +6,6 @@
         android:title="@string/search"
         app:showAsAction="always"
         android:icon="@drawable/search_icon"/>
-    <item
-        android:id="@+id/reflash"
-        android:title="Search"
-        app:showAsAction="always">
-
-    </item>
+    
 
 </menu>
