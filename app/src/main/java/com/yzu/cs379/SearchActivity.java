@@ -55,7 +55,6 @@ public class SearchActivity extends AppCompatActivity {
         Intent myIntent = getIntent();
         mysnipper = new snipper();
         mysnipper.setting(myIntent.getExtras().getString("token"),myIntent.getExtras().getString("account"));
-        String findStr = myIntent.getExtras().getString("cat");
         myDB = new DBhelper(this);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
@@ -116,6 +115,11 @@ public class SearchActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.my_search){
             Intent searchIntent = new Intent(this,SearchActivity.class);
+            Bundle bag = new Bundle();
+            bag.putString("token",mysnipper.getToken());
+            bag.putString("account",mysnipper.getAccount());
+
+            searchIntent.putExtras(bag);
             startActivity(searchIntent);
         }
 
@@ -127,8 +131,6 @@ public class SearchActivity extends AppCompatActivity {
     public void onClickSearch(View view){
 
         List<Pair<String,String>> ret_search = mysnipper.GoogleSearch(googleSearch.getText().toString());
-        Toast.makeText(this, ret_search.get(0).first + ret_search.get(0).second, Toast.LENGTH_SHORT).show();
-        Log.v("search",ret_search.get(0).first+'\n'+ret_search.get(0).second);
         googleSearch.setVisibility(View.GONE);
         search.setVisibility(View.GONE);
         ((ImageView)findViewById(R.id.imageView2)).setVisibility(View.GONE);
@@ -291,7 +293,7 @@ public class SearchActivity extends AppCompatActivity {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intentToEventContent = new Intent(SearchActivity.this,SearchActivity.class);
+                        Intent intentToEventContent = new Intent(SearchActivity.this,lobby.class);
                         Bundle bag = new Bundle();
                         bag.putString("token",mysnipper.getToken());
                         bag.putString("account",mysnipper.getAccount());
