@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,10 +39,13 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView slideRecycle;
     private myListAdapter adapter;
+    private googleListAdapter searchAdapter;
     private slideAdapter adapterslide;
     private snipper mysnipper;
     private ProgressBar myProgressBar;
     private DBhelper myDB;
+    private EditText googleSearch;
+    private Button search;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,8 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.list_item1);
         slideRecycle = (RecyclerView)findViewById(R.id.slidebar1);
         myProgressBar = (ProgressBar)findViewById(R.id.prohressBarLogin1);
-
+        googleSearch = (EditText)findViewById(R.id.google_search);
+        search = (Button)findViewById(R.id.click_search);
 
 
 
@@ -67,8 +73,9 @@ public class SearchActivity extends AppCompatActivity {
 
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.open,R.string.close);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        //Set list background
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         slideRecycle.setLayoutManager(new LinearLayoutManager(this));
         slideRecycle.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         List<CatalogClass> db = myDB.getUserAllCatalog(mysnipper.getAccount());
@@ -84,27 +91,27 @@ public class SearchActivity extends AppCompatActivity {
         }
         adapterslide = new slideAdapter(db);
         slideRecycle.setAdapter(adapterslide);
-        myProgressBar.setVisibility(View.VISIBLE);
+        //myProgressBar.setVisibility(View.VISIBLE);
 
 
 
         Runnable runnable = () -> {
-            List<CatalogClass> cat = myDB.getUserAllCatalog(mysnipper.getAccount());
-            List<cfpMetaClass> meta = mysnipper.getCFPMainPageList();
-            List<eventContentClass> event = new ArrayList<>();
-            for(int i = 0 ; i < meta.size() ; i++){
-                event.add(mysnipper.getEventContent(meta.get(i).Link));
-            }
-
-
-            adapter = new myListAdapter(meta,event,cat);
-//            recyclerView.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    recyclerView.setAdapter(adapter);
-//                }
-//            });
-
+//            List<CatalogClass> cat = myDB.getUserAllCatalog(mysnipper.getAccount());
+//            List<cfpMetaClass> meta = mysnipper.getCFPMainPageList(); //Event name
+//            List<eventContentClass> event = new ArrayList<>(); //contain the event context
+//            for(int i = 0 ; i < meta.size() ; i++){
+//                event.add(mysnipper.getEventContent(meta.get(i).Link));
+//            }
+//
+//
+//            adapter = new myListAdapter(meta,event,cat);
+////            recyclerView.post(new Runnable() {
+////                @Override
+////                public void run() {
+////                    recyclerView.setAdapter(adapter);
+////                }
+////            });
+//
             myProgressBar.post(new Runnable() {
                 @Override
                 public void run() {
@@ -176,24 +183,126 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.memu_main, menu);
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean  onOptionsItemSelected(MenuItem item){
-//
-//        if(item.getItemId() == R.id.my_search)
-//            Toast.makeText(this,"TEST",Toast.LENGTH_SHORT).show();
-//        Intent searchIntent = new Intent(this,SearchActivity.class);
-//        startActivity(searchIntent);
-//
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.memu_main, menu);
 
+        return true;
+    }
+
+    @Override
+    public boolean  onOptionsItemSelected(MenuItem item){
+
+        if(item.getItemId() == R.id.my_search)
+            Toast.makeText(this,"TEST",Toast.LENGTH_SHORT).show();
+        Intent searchIntent = new Intent(this,SearchActivity.class);
+        //startActivity(searchIntent);
+
+        return true;
+    }
+
+    public void onClickSearch(View view){
+        List<CatalogClass> cat = myDB.getUserAllCatalog(mysnipper.getAccount());
+        List<Pair<String,String>> ret_search = mysnipper.GoogleSearch(googleSearch.getText().toString());
+        Toast.makeText(this, ret_search.get(0).first + ret_search.get(0).second, Toast.LENGTH_SHORT).show();
+        Log.v("search",ret_search.get(0).first+'\n'+ret_search.get(0).second);
+        googleSearch.setVisibility(View.GONE);
+        search.setVisibility(View.GONE);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        myProgressBar.setVisibility(View.VISIBLE);
+
+        searchAdapter = new googleListAdapter(ret_search, cat);
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                recyclerView.setAdapter(searchAdapter);
+            }
+        });
+        myProgressBar.post(new Runnable() {
+            @Override
+            public void run() {
+                myProgressBar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    public class googleListAdapter extends RecyclerView.Adapter<googleListAdapter.ViewHolder> {
+        private List<Pair<String,String>> search;
+        private List<CatalogClass> catalog;
+        googleListAdapter(List<Pair<String,String>> ret_search , List<CatalogClass> cata){
+            search = ret_search;//Event Name and url
+            catalog = cata;
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+            private TextView eventName;
+            private TextView when;
+            private TextView where;
+            private TextView url;
+            private ImageView imageView;
+
+            ViewHolder(View item){
+                super(item);
+                eventName = (TextView)item.findViewById(R.id.event_name);
+                when = (TextView)item.findViewById(R.id.when);
+                where = (TextView)item.findViewById(R.id.where);
+                url = (TextView)item.findViewById(R.id.event_content);
+                imageView = (ImageView) item.findViewById(R.id.imageView);
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(SearchActivity.this,"Account Not found",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+
+        }
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.search_card,parent,false);
+
+            return new ViewHolder(view);
+        }
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position){
+            holder.eventName.setText(search.get(position).first);
+            holder.url.setText(search.get(position).second);
+            holder.when.setText("");
+            holder.where.setText("");
+
+            holder.imageView.setImageResource(R.drawable.magic_dot);
+//            if(myData.get(position).inMyList){
+//                holder.imageView.setColorFilter(Color.rgb(0xEB,0x57,0x57));
+//                holder.imageView.setVisibility(View.VISIBLE);
+//            }else{
+//                holder.imageView.setVisibility(View.INVISIBLE);
+//                boolean complete = false;
+//                for(int i = 0 ; i < contentClasses.get(position).catalog.size() ; i++){
+//                    for(int j = 0 ; j < catalog.size() ; j++){
+//                        if(contentClasses.get(position).catalog.get(i).equals(catalog.get(j).name)){
+//                            holder.imageView.setColorFilter(Color.rgb(catalog.get(j).r,catalog.get(j).g,catalog.get(j).b));
+//                            holder.imageView.setVisibility(View.VISIBLE);
+//                            complete = true;
+//                        }
+//                        if(complete)
+//                            break;
+//                    }
+//                    if(complete)
+//                        break;
+//                }
+//
+//            }
+
+            //holder.imageView.setImageDrawable(R.drawable.ic_notification_overlay);
+        }
+        @Override
+        public  int getItemCount(){
+            return  search.size();
+        }
+    }
 
     public void onClickAdd(View view){
         AlertDialog.Builder dialog = new AlertDialog.Builder(SearchActivity.this);
@@ -239,13 +348,14 @@ public class SearchActivity extends AppCompatActivity {
 
         ad.show();
     }
+
     public class myListAdapter extends RecyclerView.Adapter<myListAdapter.ViewHolder> {
         private List<cfpMetaClass> myData;
         private List<eventContentClass> contentClasses;
         private List<CatalogClass> catalog;
         myListAdapter(List<cfpMetaClass> input ,List<eventContentClass> content , List<CatalogClass> cata){
-            myData = input;
-            contentClasses = content;
+            myData = input;//Event Name
+            contentClasses = content;//Event Context
             catalog = cata;
         }
 

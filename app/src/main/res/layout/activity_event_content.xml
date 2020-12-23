@@ -116,11 +116,9 @@
         <ProgressBar
             android:id="@+id/prohressBar"
             style="?android:attr/progressBarStyleLarge"
-            android:layout_width="145dp"
-            android:layout_height="132dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
-            android:rotationX="25"
-            android:rotationY="49"
             android:visibility="visible" />
     </FrameLayout>
 
